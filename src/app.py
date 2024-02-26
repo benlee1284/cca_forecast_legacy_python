@@ -13,6 +13,29 @@ def main():
 
     weather_data = response.json()
 
+    summaries = generate_summaries(weather_data)
+
+    print("\n".join(summaries))
+
+
+def get_average_value(
+    values: list[Union[float, int]], decimal_places: Union[int, None] = None
+) -> float:
+    return round(sum(values) / len(values), decimal_places)
+
+
+def group_entries_by_date(entries) -> dict[date, List[dict]]:
+    grouped_by_day = defaultdict(list)
+
+    for entry in entries:
+        entry_time = datetime.fromisoformat(entry["date_time"].replace("Z", "+00:00"))
+        day_key = entry_time.date()
+        grouped_by_day[day_key].append(entry)
+
+    return grouped_by_day
+
+
+def generate_summaries(weather_data: dict) -> list[str]:
     summaries = []
     grouped_by_day = group_entries_by_date(weather_data)
     # Process each day
@@ -65,24 +88,7 @@ def main():
 
         summaries.append("".join(summary))
 
-    print("\n".join(summaries))
-
-
-def get_average_value(
-    values: list[Union[float, int]], decimal_places: Union[int, None] = None
-) -> float:
-    return round(sum(values) / len(values), decimal_places)
-
-
-def group_entries_by_date(entries) -> dict[date, List[dict]]:
-    grouped_by_day = defaultdict(list)
-
-    for entry in entries:
-        entry_time = datetime.fromisoformat(entry["date_time"].replace("Z", "+00:00"))
-        day_key = entry_time.date()
-        grouped_by_day[day_key].append(entry)
-
-    return grouped_by_day
+    return summaries
 
 
 if __name__ == "__main__":
