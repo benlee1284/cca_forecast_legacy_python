@@ -13,7 +13,7 @@ def main():
 
     weather_data = response.json()
 
-    summaries = {}
+    summaries = []
     grouped_by_day = group_entries_by_date(weather_data)
     # Process each day
     for day, entries in grouped_by_day.items():
@@ -63,7 +63,9 @@ def main():
             "Low Temperature: " + str(min(all_temps)) + "\n",
         ]
 
-        print("".join(summary))
+        summaries.append("".join(summary))
+
+    print("\n".join(summaries))
 
 
 def get_average_value(
