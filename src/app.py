@@ -1,6 +1,6 @@
 from collections import defaultdict
-from datetime import datetime
-from typing import Union
+from datetime import date, datetime
+from typing import Union, List
 
 import requests
 
@@ -13,13 +13,8 @@ def main():
 
     weather_data = response.json()
 
-    grouped_by_day = defaultdict(list)
     summaries = {}
-    # Group entries by day
-    for entry in weather_data:
-        entry_time = datetime.fromisoformat(entry["date_time"].replace("Z", "+00:00"))
-        day_key = entry_time.date()
-        grouped_by_day[day_key].append(entry)
+    grouped_by_day = group_entries_by_date(weather_data)
     # Process each day
     for day, entries in grouped_by_day.items():
         morning_temps, morning_rains, afternoon_temps, afternoon_rains = [], [], [], []
@@ -75,6 +70,17 @@ def get_average_value(
     values: list[Union[float, int]], decimal_places: Union[int, None] = None
 ) -> float:
     return round(sum(values) / len(values), decimal_places)
+
+
+def group_entries_by_date(entries) -> dict[date, List[dict]]:
+    grouped_by_day = defaultdict(list)
+
+    for entry in entries:
+        entry_time = datetime.fromisoformat(entry["date_time"].replace("Z", "+00:00"))
+        day_key = entry_time.date()
+        grouped_by_day[day_key].append(entry)
+
+    return grouped_by_day
 
 
 if __name__ == "__main__":
