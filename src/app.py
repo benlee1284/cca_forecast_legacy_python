@@ -1,7 +1,9 @@
-from datetime import datetime
 from collections import defaultdict
-import requests
+from datetime import datetime
 from typing import Union
+
+import requests
+
 
 def main():
     url = "https://e75urw7oieiszbzws4gevjwvze0baaet.lambda-url.eu-west-2.on.aws/"
