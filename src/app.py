@@ -1,7 +1,7 @@
 from datetime import datetime
 from collections import defaultdict
 import requests
-
+from typing import Union
 
 def main():
     url = "https://e75urw7oieiszbzws4gevjwvze0baaet.lambda-url.eu-west-2.on.aws/"
@@ -70,7 +70,7 @@ def main():
 
 
 def get_average_value(
-    values: list[float | int], decimal_places: int | None = None
+    values: list[Union[float, int]], decimal_places: Union[int, None] = None
 ) -> float:
     return round(sum(values) / len(values), decimal_places)
 
